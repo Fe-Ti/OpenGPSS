@@ -59,14 +59,19 @@ Feel free to contribute your ideas, I'll go through all of them - we can make Op
 
 ## Usage:
 
-1. Install Python 2.7 (or newer version of Python 2.x) package or IDE or interpreter
+1. Install Python 3 (or newer version of Python 3.x) package or IDE or interpreter
 
 2. Run in terminal from root folder:
 
 `python OpenGPSS\ Interpreter.py`
 
-or start Python IDE/interpreter/etc. and run *OpenGPSS Interpreter.py*
+or start Python IDE|interpreter|etc. and run *OpenGPSS Interpreter.py*
 
 ## Manuals:
 - [EN](./manuals/Manual.md) 
 - [RU](./manuals/Manual_RU.md)
+
+## TODO
+- [x] Migrate to Python 3
+- [ ] Make CLI interface a bit more userfriendly
+- [ ] Update READMEs 
