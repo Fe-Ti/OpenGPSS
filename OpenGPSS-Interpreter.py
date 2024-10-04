@@ -9,6 +9,7 @@
 #                                                #
 # OpenGPSS_Interpreter.py - starts all action!   #
 #                                                #
+# Python3 transition by Fe-Ti, 2024 (c)          #
 ##################################################
 
 
