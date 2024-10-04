@@ -15,7 +15,7 @@
 
 
 import sys
-import errors
+from . import errors
 
 tokens = []
 numbers = '0123456789'
@@ -140,117 +140,117 @@ pos = 0
 allprogram = []
 
 def analyze(program):
-	global pos
-	global allprogram
-	global tokens
-	tokens = []
-	pos = 0
-	allprogram = program
-	
-	while pos < len(allprogram):
-		char = peek(0)
-		if char == '"':
-			tokenizeString()
-		elif char in numbers:
-			tokenizeNumber()
-		elif char in letters+'_':
-			tokenizeWord()
-		elif char in operatorChars:
-			tokenizeOperator()
-		else:
-			nextchar()
-	return tokens
+    global pos
+    global allprogram
+    global tokens
+    tokens = []
+    pos = 0
+    allprogram = program
+    
+    while pos < len(allprogram):
+        char = peek(0)
+        if char == '"':
+            tokenizeString()
+        elif char in numbers:
+            tokenizeNumber()
+        elif char in letters+'_':
+            tokenizeWord()
+        elif char in operatorChars:
+            tokenizeOperator()
+        else:
+            nextchar()
+    return tokens
 
 def addToken(tokenType, value=''):
-	global tokens
-	tokens.append([tokenType, value])
+    global tokens
+    tokens.append([tokenType, value])
 
 def tokenizeNumber():
-	result = ''
-	cur = peek(0)
-	while True:
-		if cur == '.':
-			if '.' in result:
-				errors.print_error(9, '', [result+'.'])
-			result += cur
-		elif cur in numbers:
-			result += cur
-		else:
-			break
-		cur = nextchar()
-	addToken('number', result)
+    result = ''
+    cur = peek(0)
+    while True:
+        if cur == '.':
+            if '.' in result:
+                errors.print_error(9, '', [result+'.'])
+            result += cur
+        elif cur in numbers:
+            result += cur
+        else:
+            break
+        cur = nextchar()
+    addToken('number', result)
 
 def tokenizeWord():
-	cur = peek(0)
-	buf = ''
-	while True:
-		if cur not in letters+numbers+'_':
-			if buf in typedefs:
-				addToken('typedef', buf)
-			elif buf in blocks:
-				addToken('block', buf)
-			elif buf in builtins:
-				addToken('builtin', buf)
-			else:
-				addToken('word', buf)
-			return
-		buf += cur
-		cur = nextchar()
+    cur = peek(0)
+    buf = ''
+    while True:
+        if cur not in letters+numbers+'_':
+            if buf in typedefs:
+                addToken('typedef', buf)
+            elif buf in blocks:
+                addToken('block', buf)
+            elif buf in builtins:
+                addToken('builtin', buf)
+            else:
+                addToken('word', buf)
+            return
+        buf += cur
+        cur = nextchar()
 
 def tokenizeOperator():
-	cur = peek(0)
-	buf = ''
-	
-	if cur == '/' and peek(1) == '/':
-		nextchar()
-		nextchar()
-		cur = peek(0)
-		while True:
-			if cur in '\n\r\0':
-				nextchar()
-				return
-			cur = nextchar()
-	if cur == '/' and peek(1) == '*':
-		nextchar()
-		nextchar()
-		cur = peek(0)
-		while True:
-			if cur == '*' and peek(1) == '/':
-				nextchar()
-				nextchar()
-				return
-			cur = nextchar()
-				
-	while True:
-		if buf and buf+cur not in operators:
-			addToken(operators[buf])
-			return
-		buf += cur
-		cur = nextchar()
-		
+    cur = peek(0)
+    buf = ''
+    
+    if cur == '/' and peek(1) == '/':
+        nextchar()
+        nextchar()
+        cur = peek(0)
+        while True:
+            if cur in '\n\r\0':
+                nextchar()
+                return
+            cur = nextchar()
+    if cur == '/' and peek(1) == '*':
+        nextchar()
+        nextchar()
+        cur = peek(0)
+        while True:
+            if cur == '*' and peek(1) == '/':
+                nextchar()
+                nextchar()
+                return
+            cur = nextchar()
+                
+    while True:
+        if buf and buf+cur not in operators:
+            addToken(operators[buf])
+            return
+        buf += cur
+        cur = nextchar()
+        
 def tokenizeString():
-	nextchar()
-	cur = peek(0)
-	buf = ''
-	while True:
-		if cur == '"':
-			addToken('string', buf)
-			nextchar()
-			return
-		if cur == '\\' and peek(1) == '"':
-			pass
-		else:
-			buf += cur
-		cur = nextchar()
+    nextchar()
+    cur = peek(0)
+    buf = ''
+    while True:
+        if cur == '"':
+            addToken('string', buf)
+            nextchar()
+            return
+        if cur == '\\' and peek(1) == '"':
+            pass
+        else:
+            buf += cur
+        cur = nextchar()
 
 def peek(relpos):
-	global pos
-	cur = pos + relpos
-	if cur >= len(allprogram):
-		return ''
-	return allprogram[cur]
+    global pos
+    cur = pos + relpos
+    if cur >= len(allprogram):
+        return ''
+    return allprogram[cur]
 
 def nextchar():
-	global pos
-	pos += 1
-	return peek(0)
+    global pos
+    pos += 1
+    return peek(0)

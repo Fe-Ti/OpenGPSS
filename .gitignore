@@ -1,3 +1,4 @@
 .*.py
 *.pyc
-./modules/*.pyc
+modules/*.pyc
+modules/*.cfg

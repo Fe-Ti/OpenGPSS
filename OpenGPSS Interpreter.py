@@ -13,14 +13,13 @@
 
 
 
-from modules import interpreter, errors
+from modules import interpreter, errors, config
 import os
-import config
 
 config.load_config_file()
 interpreter.print_logo()
-print 'name of file with system to simulate:'
-f = raw_input()
+print('name of file with system to simulate:')
+f = input()
 filepath = os.path.dirname(os.path.abspath(__file__))+'/'+f+'.ogps'
 if not os.path.isfile(filepath):
 	errors.print_error(1, '', [filepath])
