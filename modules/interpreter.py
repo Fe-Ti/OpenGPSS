@@ -751,7 +751,7 @@ def graph_sample(graph):
 ###############################################################
 
 
-def start_interpreter(filepath):
+def start_interpreter(filepath, options):
     progfile = open(filepath, 'r')
     allprogram = progfile.read()
     progfile.close()
@@ -776,11 +776,20 @@ def start_interpreter(filepath):
     
     toklines = parser.tocodelines(tokens)
     toklines = parser.convertBlocks(toklines)
+    logname = None
     logfile = None
+
+    if options["dry-run"]:
+        config.log_to_file = False
+        config.results_to_file = False
+
     if config.log_to_file:
         name = filepath[:-5]
         now = datetime.datetime.now()
         logname = name+'_log_'+now.strftime("%Y-%m-%d %Hh%M")+'.txt'
+    if options["logfile"]: # if option is not none, then override config
+        logname = options["logfile"]
+    if logname:
         print('All logs will be saved in "' + logname + \
               '" file (log file can become very large!).')
         original_stdout = sys.stdout
@@ -974,12 +983,19 @@ def start_interpreter(filepath):
     now = datetime.datetime.now()
     if original_stdout:
         sys.stdout = original_stdout
-    if config.results_to_file:
+
+    if config.results_to_file or options["resfile"]:
         if not original_stdout:
             original_stdout = sys.stdout
-        results_file = open(filepath[:-5]+'_results_'+ \
-                            now.strftime("%Y-%m-%d %Hh%M")+'.txt', 'w')
+        results_filename = filepath[:-5]+'_results_'+ \
+                            now.strftime("%Y-%m-%d %Hh%M")+'.txt'
+        if options["resfile"]:
+            results_filename = options["resfile"] # override default if filename
+                                                    # is specified in CLI
+        else:
+            results_file = open(results_filename, 'w')
         sys.stdout = results_file
+
     print_results()
     if results_file:
         sys.stdout = original_stdout

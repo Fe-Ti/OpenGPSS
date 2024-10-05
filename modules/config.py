@@ -17,6 +17,9 @@
 from modules import lexer, errors
 import os
 
+DEFAULT_CONFNAME = "opengpss_config"
+DEFAULT_CONFSUFFIX = ".cfg"
+
 enable_nice_vt100_codes = True
 results_to_file = False
 log_to_file = False
@@ -35,7 +38,7 @@ tick_by_tick_simulation = False
 block_by_block_simulation = False
 
 
-def load_config_file():
+def load_config_file(path=None):
     
     global enable_nice_vt100_codes
     global results_to_file
@@ -56,8 +59,16 @@ def load_config_file():
     
     conf = None
     try:
-        filepath = os.path.dirname(os.path.abspath(__file__))
-        conf = open(filepath+'/opengpss_config.cfg', 'r')
+        if not path:
+            # if path is None, then use default config path
+            filepath = os.path.dirname(os.path.abspath(__file__))
+            conf_file = filepath+'/'+DEFAULT_CONFNAME + DEFAULT_CONFSUFFIX
+        else:
+            # use path or append it with default conf name
+            conf_file = path + \
+                            (not(path.endswith(DEFAULT_CONFSUFFIX))) * \
+                            ('/' + DEFAULT_CONFNAME + DEFAULT_CONFSUFFIX)
+        conf = open(conf_file, 'r')
     except IOError:
         print('Cannot find config file "opengpss_config.cfg", ' \
               'default config file will be created...')
