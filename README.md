@@ -59,13 +59,16 @@ Feel free to contribute your ideas, I'll go through all of them - we can make Op
 
 ## Usage:
 
-1. Install Python 3 (or newer version of Python 3.x) package or IDE or interpreter
+1. Install Python 3 package or IDE with Python 3 interpreter.
 
-2. Run in terminal from root folder:
+2. Run in terminal (assuming you're in repository root):
+```sh
+python OpenGPSS-Interpreter.py [PATH_TO_INPUT_FILE]
+```
+Or if you prefer IDE, then run *OpenGPSS-Interpreter.py* in IDE.
 
-`python OpenGPSS\ Interpreter.py`
-
-or start Python IDE|interpreter|etc. and run *OpenGPSS Interpreter.py*
+**Note:** The optional argument `PATH_TO_INPUT_FILE` can be a relative or
+absolute path to your GPSS system file.
 
 ## Manuals:
 - [EN](./manuals/Manual.md) 
