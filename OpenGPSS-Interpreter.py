@@ -102,8 +102,7 @@ if options["dry-run"]:
     options["resfile"] = None
 
 # Making path to input file
-filepath = os.path.dirname(os.path.abspath(__file__)) + \
-            '/'+sys_file+(not(sys_file.endswith('.ogps')))*'.ogps'
+filepath = os.path.abspath(sys_file+(not(sys_file.endswith('.ogps')))*'.ogps')
 
 if not os.path.isfile(filepath):
     errors.print_error(1, '', [filepath])
